@@ -1,5 +1,4 @@
 # goconfig
-[![Build Status](https://travis-ci.org/gosidekick/goconfig.svg?branch=master)](https://travis-ci.org/gosidekick/goconfig)
 [![Go Report Card](https://goreportcard.com/badge/github.com/gosidekick/goconfig)](https://goreportcard.com/report/github.com/coollision/goconfig)
 [![Maintainability](https://api.codeclimate.com/v1/badges/f11c9124505888c4c8db/maintainability)](https://codeclimate.com/github/coollision/goconfig/maintainability)
 [![GoDoc](https://godoc.org/github.com/gosidekick/goconfig?status.png)](https://pkg.go.dev/github.com/gosidekick/goconfig?tab=doc)
