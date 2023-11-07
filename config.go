@@ -64,10 +64,10 @@ var (
 	// Formats is the list of registered formats.
 	Formats []Fileformat
 
-	// FileEnv is the enviroment variable that define the config file
+	// FileEnv is the environment variable that define the config file
 	FileEnv string
 
-	// PathEnv is the enviroment variable that define the config file path
+	// PathEnv is the environment variable that define the config file path
 	PathEnv string
 
 	// WatchConfigFile is the flag to update the config when the config file changes
