@@ -4,6 +4,8 @@ import (
 	"errors"
 	"fmt"
 	"reflect"
+	"strings"
+	"unicode"
 )
 
 // ReflectFunc type used to create functions to parse struct and tags
@@ -171,7 +173,13 @@ func updateTag(field *reflect.StructField, superTag string) (ret string) {
 		return
 	}
 	if ret == "" {
-		ret = field.Name
+		// No explicit tag override — derive the segment from the Go field
+		// name itself, splitting multi-word identifiers on word boundaries
+		// (EnableBasic -> ENABLE_BASIC) so it reads the way every other
+		// nesting-derived segment already does. An explicit tag (the branch
+		// above) is left exactly as written; only the auto-derived name is
+		// split.
+		ret = toSnakeCase(field.Name)
 	}
 	if superTag != "" {
 		ret = superTag + TagSeparator + ret
@@ -181,6 +189,42 @@ func updateTag(field *reflect.StructField, superTag string) (ret string) {
 		ret = Prefix + TagSeparator + ret
 	}
 	return
+}
+
+// toSnakeCase converts a Go exported identifier such as "EnableBasic",
+// "HTTPOnly", or "PublicBaseURL" into an underscore-separated, uppercase
+// form ("ENABLE_BASIC", "HTTP_ONLY", "PUBLIC_BASE_URL").
+//
+// Before this existed, updateTag used the bare field name unmodified, so a
+// multi-word field only ever produced one run-together uppercase segment
+// (EnableBasic -> ENABLEBASIC) instead of the word-separated form every
+// consumer actually expects and every other config field with this style of
+// name implicitly promises — env vars for a struct nested two levels deep
+// worked fine (e.g. HUNT_MEDIA_DIR, since every segment was already a single
+// word), but a multi-word field anywhere in the path silently produced a
+// name nothing was ever going to set (e.g. API_AUTH_ENABLE_BASIC and
+// API_CORS_ALLOWED_ORIGINS both silently ignored in production).
+//
+// A boundary is inserted before an uppercase rune that follows a lowercase
+// rune (wordWord -> word_Word), and before the last uppercase rune of a run
+// that's immediately followed by a lowercase rune (ABCd -> AB_Cd) — the
+// second rule is what keeps an acronym like "HTTP" or "URL" together as one
+// segment instead of splitting on every letter.
+func toSnakeCase(s string) string {
+	runes := []rune(s)
+	var b strings.Builder
+	b.Grow(len(runes) + 4)
+	for i, r := range runes {
+		if i > 0 && unicode.IsUpper(r) {
+			prev := runes[i-1]
+			nextIsLower := i+1 < len(runes) && unicode.IsLower(runes[i+1])
+			if unicode.IsLower(prev) || (unicode.IsUpper(prev) && nextIsLower) {
+				b.WriteRune('_')
+			}
+		}
+		b.WriteRune(r)
+	}
+	return strings.ToUpper(b.String())
 }
 
 // ReflectStruct is called when the Parse encounters a sub-structure in the current structure and then calls Parser again to treat the fields of the sub-structure.
