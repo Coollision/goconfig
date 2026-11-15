@@ -1,5 +1,4 @@
-//Copyright (c) 2016 Cesar Gimenes - MIT License
+// Package validate checks the required fields of a configuration struct.
 //
-//validate uses a struct
-
+// Copyright (c) 2016 Cesar Gimenes - MIT License
 package validate
