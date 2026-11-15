@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/Coollision/goconfig/compare/v0.3.0...v0.3.1) (2026-11-15)
+
+
+### Bug Fixes
+
+* **ci:** don't fail release-please when no release PR is produced ([#10](https://github.com/Coollision/goconfig/issues/10)) ([cf9f871](https://github.com/Coollision/goconfig/commit/cf9f871199eba7e102e56f92a9e6fc6aa406e323))
+
 ## [0.3.0](https://github.com/Coollision/goconfig/compare/v0.2.0...v0.3.0) (2026-11-15)
 
 
