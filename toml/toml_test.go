@@ -11,7 +11,7 @@ import (
 
 type tomlConfig struct {
 	LogLevel string `cfgDefault:"INFO"`
-	Api      struct {
+	API      struct {
 		Auth struct {
 			EnableBasic bool `cfgDefault:"false"`
 		}
@@ -20,7 +20,7 @@ type tomlConfig struct {
 
 func TestLoadTOML_FileValuesApply(t *testing.T) {
 	dir := t.TempDir()
-	content := "LogLevel = \"trace\"\n\n[Api.Auth]\nEnableBasic = true\n"
+	content := "LogLevel = \"trace\"\n\n[API.Auth]\nEnableBasic = true\n"
 	if err := os.WriteFile(filepath.Join(dir, "config.toml"), []byte(content), 0o644); err != nil {
 		t.Fatalf("write config.toml: %v", err)
 	}
@@ -36,8 +36,8 @@ func TestLoadTOML_FileValuesApply(t *testing.T) {
 	if cfg.LogLevel != "trace" {
 		t.Errorf("LogLevel = %q, want trace", cfg.LogLevel)
 	}
-	if !cfg.Api.Auth.EnableBasic {
-		t.Error("expected Api.Auth.EnableBasic to be true from config.toml")
+	if !cfg.API.Auth.EnableBasic {
+		t.Error("expected API.Auth.EnableBasic to be true from config.toml")
 	}
 }
 

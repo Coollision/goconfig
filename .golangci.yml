@@ -9,4 +9,4 @@ linters:
 
 formatters:
   enable:
-    - gofumpt
+    - gofmt
