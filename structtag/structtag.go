@@ -74,7 +74,7 @@ func Parse(s interface{}, superTag string) (err error) {
 	}
 
 	st := reflect.TypeOf(s)
-	if st.Kind() != reflect.Ptr {
+	if st.Kind() != reflect.Pointer {
 		err = ErrNotAPointer
 		return
 	}
@@ -122,7 +122,7 @@ func SetBoolDefaults(s interface{}, superTag string) (err error) {
 	}
 
 	st := reflect.TypeOf(s)
-	if st.Kind() != reflect.Ptr {
+	if st.Kind() != reflect.Pointer {
 		err = ErrNotAPointer
 		return
 	}
@@ -228,7 +228,7 @@ func toSnakeCase(s string) string {
 }
 
 // ReflectStruct is called when the Parse encounters a sub-structure in the current structure and then calls Parser again to treat the fields of the sub-structure.
-func ReflectStruct(field *reflect.StructField, value *reflect.Value, tag string) (err error) {
+func ReflectStruct(_ *reflect.StructField, value *reflect.Value, tag string) (err error) {
 	err = Parse(value.Addr().Interface(), tag)
 	return
 }
@@ -241,7 +241,7 @@ func ReflectArray(field *reflect.StructField, value *reflect.Value, tag string) 
 		return
 	}
 	switch value.Type().Elem().Kind() {
-	case reflect.Struct, reflect.Slice, reflect.Array, reflect.Ptr, reflect.Interface:
+	case reflect.Struct, reflect.Slice, reflect.Array, reflect.Pointer, reflect.Interface:
 		for i := 0; i < value.Len(); i++ {
 			err = Parse(value.Index(i).Addr().Interface(), fmt.Sprintf("%s[%d]", tag, i))
 			if err != nil {

@@ -1,3 +1,4 @@
+// Package yaml registers the YAML config file format for goconfig.
 package yaml
 
 import (

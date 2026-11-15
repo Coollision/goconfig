@@ -222,7 +222,6 @@ func asyncParse(config interface{}, w *fsnotify.Watcher, chErr chan<- error, chU
 
 		case err := <-w.Errors:
 			chErr <- err
-			break
 		}
 	}
 }
