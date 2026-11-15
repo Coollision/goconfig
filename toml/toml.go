@@ -1,3 +1,4 @@
+// Package toml registers the TOML config file format for goconfig.
 package toml
 
 import (

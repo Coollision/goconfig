@@ -1,0 +1,10 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:best-practices", ":semanticCommitTypeAll(chore)"],
+  "postUpdateOptions": ["gomodTidy"],
+  "packageRules": [
+    {"matchManagers": ["github-actions"], "pinDigests": true, "groupName": "github actions"},
+    {"matchManagers": ["gomod"], "matchUpdateTypes": ["minor", "patch"], "groupName": "go deps", "automerge": true}
+  ],
+  "vulnerabilityAlerts": {"labels": ["security"]}
+}
