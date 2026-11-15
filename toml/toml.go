@@ -4,10 +4,9 @@ package toml
 import (
 	"os"
 	"path/filepath"
-	"reflect"
 
 	"github.com/coollision/goconfig"
-	"github.com/pelletier/go-toml"
+	"github.com/pelletier/go-toml/v2"
 )
 
 func init() {
@@ -29,20 +28,19 @@ func LoadTOML(config interface{}) (err error) {
 		}
 		return
 	}
-	var tree *toml.Tree
-	tree, err = toml.LoadFile(configFile)
+	var data []byte
+	data, err = os.ReadFile(configFile)
 	if err != nil {
 		return
 	}
-	err = tree.Unmarshal(config)
+	err = toml.Unmarshal(data, config)
 	return
 }
 
 // PrepareHelp return help string for this file format.
 func PrepareHelp(config interface{}) (help string, err error) {
 	var byt []byte
-	cfg := reflect.ValueOf(config).Elem()
-	byt, err = toml.Marshal(cfg)
+	byt, err = toml.Marshal(config)
 	if err != nil {
 		return
 	}
